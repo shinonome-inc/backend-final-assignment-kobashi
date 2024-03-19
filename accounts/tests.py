@@ -2,6 +2,8 @@ from django.contrib.auth import SESSION_KEY, get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from mysite.settings import LOGIN_REDIRECT_URL
+
 User = get_user_model()
 
 
@@ -26,7 +28,7 @@ class TestSignupView(TestCase):
 
         self.assertRedirects(
             response,
-            reverse("tweets:home"),
+            reverse(LOGIN_REDIRECT_URL),
             status_code=302,
             target_status_code=200,
         )
@@ -194,10 +196,28 @@ class TestSignupView(TestCase):
         self.assertIn("確認用パスワードが一致しません。", form.errors["password2"])
 
 
-# class TestLoginView(TestCase):
-#     def test_success_get(self):
+class TestLoginView(TestCase):
+    def setup(self):
+        self.url = "accounts:login"
+        self.user = User.objects.create_user(username="testuser", password="testpassword")
 
-#     def test_success_post(self):
+    def test_success_get(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_success_post(self):
+        valid_data = {
+            "username": "testuser",
+            "password": "testpassword",
+        }
+        response = self.client.post(self.url, valid_data)
+        self.assertRedirects(
+            response,
+            reverse(LOGIN_REDIRECT_URL),
+            status_code=302,
+        )
+        self.assertIn(SESSION_KEY, self.client.session)
+
 
 #     def test_failure_post_with_not_exists_user(self):
 
