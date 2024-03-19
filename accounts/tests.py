@@ -198,7 +198,7 @@ class TestSignupView(TestCase):
 
 class TestLoginView(TestCase):
     def setup(self):
-        self.url = "accounts:login"
+        self.url = reverse("accounts:login")
         self.user = User.objects.create_user(username="testuser", password="testpassword")
 
     def test_success_get(self):
