@@ -215,6 +215,7 @@ class TestLoginView(TestCase):
             response,
             reverse(LOGIN_REDIRECT_URL),
             status_code=302,
+            target_status_code=200,
         )
         self.assertIn(SESSION_KEY, self.client.session)
 
@@ -254,7 +255,7 @@ class TestLogoutView(TestCase):
 
     def test_success_post(self):
         response = self.client.post(self.url)
-        self.assertRedirects(response, reverse(LOGOUT_REDIRECT_URL), status_code=302)
+        self.assertRedirects(response, reverse(LOGOUT_REDIRECT_URL), status_code=302, target_status_code=200)
         self.assertNotIn(SESSION_KEY, self.client.session)
 
 
