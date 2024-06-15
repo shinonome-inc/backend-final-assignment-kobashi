@@ -18,6 +18,8 @@
     <nav>
       <ul>
         <li><a href="{% url 'accounts:logout' %}">ログアウト</a></li>
+        <li><a href="{% url 'accounts:user_profile' %}">プロフィール</a></li>
+        <li><a href="{% url 'tweets:create' %}">ツイート</a></li>
       </ul>
     </nav>
     {% else %}

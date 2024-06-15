@@ -4,4 +4,12 @@
 
 {% block content %}
 <p>{{ user.get_username }}</p>
+{% for tweet in tweets %}
+<li>
+    <p>{{ tweet.user.username }}</p>
+    <p><a href="{% url 'tweets:detail' pk=tweet.pk %}">{{ tweet.content }}</a></p>
+    <p>{{ tweet.created_at }}</p>
+</li>
+{% endfor %}
+<a href="{% url 'tweets:home' %}">戻る</a>
 {% endblock %}

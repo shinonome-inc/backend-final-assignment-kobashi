@@ -1,8 +1,12 @@
 from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
+
+from accounts.models import User
+from tweets.models import Tweet
 
 from .forms import SignupForm
 
@@ -23,3 +27,12 @@ class SignupView(CreateView):
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = "accounts/profile.html"
+
+    def get(self, request, username):
+        user = User.objects.get(username=username)
+        tweets = Tweet.objects.filter(user=user).order_by("-created_at")
+        return render(
+            request,
+            self.template_name,
+            {"user": user, "tweets": tweets},
+        )
