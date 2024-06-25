@@ -5,5 +5,8 @@
 <p>{{ tweet.content }}</p>
 <p>作成者: {{ tweet.user.username }}</p>
 <p>作成日時: {{ tweet.created_at }}</p>
-<p><a href="{% url 'tweets:home'}">戻る</a></p>
+{% if user.pk == tweet.user.pk %}
+<p><a href="{% url 'tweets:delete' pk=tweet.pk %}">削除</a></p>
+{% endif %}
+<p><a href="{% url 'tweets:home' %}">戻る</a></p>
 {% endblock %}
