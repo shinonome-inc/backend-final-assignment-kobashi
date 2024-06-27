@@ -30,7 +30,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, username):
         context = super().get_context_data()
-        user = get_object_or_404(User, username)
+        user = get_object_or_404(User, username=username)
         context["user"] = username
         context["tweets"] = Tweet.objects.select_related("user").filter(user=user).order_by("-created_at")
         return context
